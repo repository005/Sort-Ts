@@ -1,9 +1,11 @@
+import { Sorter } from './Sort';
+
 class NodeElement {
   next: NodeElement | null = null;
-  constructor(public value: number) {}
+  constructor(public data: number) {}
 }
 
-class LinkedList {
+export class LinkedList extends Sorter {
   head: NodeElement | null = null;
 
   add(data: number) {
@@ -40,9 +42,51 @@ class LinkedList {
   }
 
   at(index: number): NodeElement {
+    if (!this.head) {
+      throw new Error('List is empty!');
+    }
 
+    let counter = 0;
+    let node: NodeElement | null = this.head;
+
+    while (node) {
+      if (index === counter) {
+        return node;
+      }
+      counter += 1;
+      node = node.next;
+    }
+
+    throw new Error('There are no such objects with whis index');
   }
 
-  compare(): boolean {}
-  swap(): void {}
+  compare(leftIndex: number, rightIndex: number): boolean {
+    if (!this.head) {
+      throw new Error('List is empty!');
+    }
+    return this.at(leftIndex).data > this.at(rightIndex).data;
+  }
+
+  swap(leftIndex: number, rightIndex: number): void {
+    if (!this.head) {
+      throw new Error('List is empty!');
+    }
+
+    const leftHand = this.at(leftIndex).data;
+    this.at(leftIndex).data = this.at(rightIndex).data;
+    this.at(rightIndex).data = leftHand;
+  }
+
+  print(): void {
+    if (!this.head) {
+      console.log('List is empty!');
+    }
+
+    let node: NodeElement | null = this.head;
+
+    while (node) {
+      console.log(node.data);
+      node = node.next;
+    }
+  }
 }
